@@ -1,0 +1,22 @@
+{
+  "name": "adneuron",
+  "version": "0.2.0",
+  "description": "Analyze and manage Google Ads, Meta Ads and GA4 in Claude with AdNeuron: reports, budgets, diagnosis, waste audits, keyword planning and confirmed campaign changes.",
+  "author": {
+    "name": "AdNeuron.ai",
+    "url": "https://adneuron.ai"
+  },
+  "homepage": "https://adneuron.ai",
+  "license": "MIT",
+  "keywords": [
+    "advertising",
+    "google-ads",
+    "meta-ads",
+    "ga4",
+    "marketing",
+    "ppc",
+    "budgets",
+    "keywords"
+  ],
+  "mcpServers": "./.mcp.json"
+}

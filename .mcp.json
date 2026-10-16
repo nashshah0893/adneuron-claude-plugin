@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "adneuron": {
+      "type": "http",
+      "url": "https://mcp.adneuron.ai/mcp"
+    }
+  }
+}
