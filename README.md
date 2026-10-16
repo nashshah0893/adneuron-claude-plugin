@@ -9,7 +9,7 @@ In Claude, open **Customize → Plugins**, search for **AdNeuron**, and click **
 In Claude Code:
 
 ```
-/plugin install adneuron --marketplace YOUR-GITHUB-USER/adneuron-claude-plugin
+/plugin install adneuron --marketplace nashshah0893/adneuron-claude-plugin
 ```
 
 The first time Claude uses AdNeuron, you'll be sent to adneuron.ai to sign in and approve access. AdNeuron never receives your ad-platform password. Then link your ad accounts in AdNeuron, or ask Claude to "connect my Google Ads account".
