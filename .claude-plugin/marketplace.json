@@ -1,6 +1,6 @@
 {
   "name": "adneuron",
-  "description": "AdNeuron's official Claude plugin for Google Ads, Meta Ads and GA4.",
+  "description": "AdNeuron's official Claude plugin for Google Ads and Meta Ads.",
   "owner": {
     "name": "AdNeuron.ai",
     "url": "https://adneuron.ai"
@@ -9,8 +9,8 @@
     {
       "name": "adneuron",
       "source": "./",
-      "description": "Analyze and manage Google Ads, Meta Ads and GA4 in Claude with AdNeuron: reports, budgets, diagnosis, waste audits, keyword planning and confirmed campaign changes.",
-      "version": "0.2.0"
+      "description": "Analyze Google Ads and Meta Ads in Claude with AdNeuron: performance reports, budget review, change diagnosis, waste audits and keyword planning.",
+      "version": "0.3.0"
     }
   ]
 }

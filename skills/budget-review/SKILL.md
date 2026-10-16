@@ -28,7 +28,7 @@ Show where budget is set, how fast it's being spent, and where reallocation coul
 - **Headline**: total daily budget, average daily spend, projected 30-day spend, and whether that's on track against the user's target.
 - **Budget table**: owner (campaign, ad set or shared budget), platform, daily budget, average daily spend, utilization, label. Sort by the largest gap.
 - **Allocation insight**: compare each owner's share of spend with its share of conversions or conversion value (from `get_performance_summary`). Flag efficient owners that are budget-limited (at or over budget with good CPA or ROAS) and weak owners taking a large share.
-- **Recommendations** (up to 3): specific moves with reasoning. If the user wants to apply one, hand off to the `campaign-changes` skill, which confirms before writing.
+- **Recommendations** (up to 3): specific moves with reasoning. If the user wants to apply one, follow the changes rule in the reference: describe the exact change and that it needs their explicit approval, and explain how to make it in Google Ads or Meta Ads Manager if AdNeuron says it isn't available yet.
 - **Scope line**: window, timezone, currency, last sync.
 
 ## Do not

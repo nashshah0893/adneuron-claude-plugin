@@ -10,7 +10,7 @@ Help the user plan a new or expanded Google Ads effort: keywords, expected costs
 ## Before calling tools
 
 1. Read `references/adneuron-rules.md` once per conversation and follow it.
-2. Keyword tools need a connected Google Ads account UUID from `list_accounts` (used only for Keyword Planner access). If there's no Google Ads account, offer `connect_account` with `google_ads`.
+2. Keyword tools need a connected Google Ads account `id` from `list_accounts` (used only for Keyword Planner access). If there's no Google Ads account, offer `connect_account` with `google_ads`.
 3. Gather from the conversation: product or service, 1-10 seed keywords, target country (ISO code, default US) and language (default en). Ask only for what's missing and essential.
 
 ## Workflow
@@ -26,4 +26,4 @@ Help the user plan a new or expanded Google Ads effort: keywords, expected costs
 - **Budget tiers table** when fetched, plus which tier fits the user's stated budget or goals.
 - **Recommended setup**: campaign type, ad-group themes from the intent groups, starter negative keywords.
 - State that Keyword Planner figures are historical estimates, not guarantees.
-- If the user wants to create the campaign, hand off to the `campaign-changes` skill. New campaigns always start paused.
+- If the user wants to create the campaign, give them the setup to build in Google Ads. Any change made through AdNeuron needs their explicit approval; if AdNeuron says campaign creation isn't available yet, say so.
