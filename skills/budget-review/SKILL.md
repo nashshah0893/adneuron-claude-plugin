@@ -14,7 +14,7 @@ Show where budget is set, how fast it's being spent, and where reallocation coul
 
 ## Workflow
 
-1. Call `get_budget_portfolio` (optional `account_id`, optional `period` DAILY or LIFETIME). It returns budgets grouped by their real owner: a Google Ads shared budget appears once even when several campaigns use it, and Meta ad-set budgets belong to the ad set, not the campaign. Don't double-count shared budgets.
+1. Call `list_ad_budgets` (optional `account_id`, optional `period` DAILY or LIFETIME). It returns budgets grouped by their real owner: a Google Ads shared budget appears once even when several campaigns use it, and Meta ad-set budgets belong to the ad set, not the campaign. Don't double-count shared budgets.
 2. Call `get_performance_summary` with `lookback_days: 7` for recent actual spend. Add `list_top_performers` (`sort_by: spend`) only if campaign-level spend isn't already in the results.
 3. Compute, per budget owner and in total (per currency):
    - **Daily budget**: the daily amount; for lifetime budgets, remaining budget / remaining days when dates are returned, otherwise report the lifetime amount only.
