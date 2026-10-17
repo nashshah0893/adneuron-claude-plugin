@@ -10,7 +10,7 @@
       "name": "adneuron",
       "source": "./",
       "description": "Analyze Google Ads and Meta Ads in Claude with AdNeuron: performance reports, budget review, change diagnosis, waste audits and keyword planning.",
-      "version": "0.3.1"
+      "version": "0.3.2"
     }
   ]
 }
