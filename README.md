@@ -18,7 +18,7 @@ The first time Claude uses AdNeuron, you'll be sent to adneuron.ai to sign in an
 
 - An AdNeuron account (free plan available) at https://adneuron.ai
 - A connected Google Ads account. Meta Ads is available on request.
-- A paid Claude plan (Pro, Max, Team or Enterprise)
+- A Claude account on any plan (Free includes one custom connector). Setup guide: https://adneuron.ai/integrations/claude
 
 ## Skills
 
