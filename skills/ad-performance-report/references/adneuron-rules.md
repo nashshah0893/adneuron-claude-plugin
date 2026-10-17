@@ -14,7 +14,7 @@ Apply these rules to every answer that uses AdNeuron tools (the `adneuron` MCP s
 
 - AdNeuron plans include a monthly tool-call quota (the free plan has 15). `get_usage` and `get_plan_limits` never use quota.
 - Plan calls before making them. Prefer one broad call over several narrow ones, reuse results already in the conversation, and never repeat a call with the same arguments.
-- If a call fails because of a quota or plan limit, say so plainly, call `get_usage` to show where the user stands, and offer `get_billing_portal` if they want to manage or upgrade their plan. Don't retry.
+- If a call fails because of a quota or plan limit, say so plainly, call `get_usage` to show where the user stands, and tell them they can manage or upgrade their plan on the billing page at https://adneuron.ai/dashboard/billing. Don't retry.
 
 ## Date ranges
 
