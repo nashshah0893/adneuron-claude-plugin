@@ -27,7 +27,7 @@ The first time Claude uses AdNeuron, you'll be sent to adneuron.ai to sign in an
 | `ad-performance-report` | Performance summary, top campaigns, Google vs. Meta | "How did my ads do in the last 30 days?" |
 | `budget-review` | Budgets by owner, daily spend vs. budget, 30-day projection, reallocation ideas | "Am I on track for my $8,000 monthly budget?" |
 | `performance-diagnosis` | Explains why ROAS, conversions, spend, CTR or clicks changed | "Why did my ROAS drop this week?" |
-| `waste-audit` | Wasted spend, stale campaigns, negative-keyword gaps, tracking health | "Where am I wasting money?" |
+| `waste-audit` | Wasted spend, stale campaigns, negative-keyword gaps, connection and sync health | "Where am I wasting money?" |
 | `keyword-planning` | Keyword ideas, budget tiers, campaign type recommendation | "Find keywords and a budget for emergency plumbing in Austin." |
 
 ## How changes work
