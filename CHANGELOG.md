@@ -2,6 +2,10 @@
 
 ## 0.4.0 — compatibility update (in review)
 
+Review follow-up corrects legacy findings' unfiltered period/account/currency limits, ambiguous
+zero-ranked observations, the bounded/non-targeted entity lists, and Meta ad analysis's actual
+completion/error/cursor fields. Shared rules and reviewer counterexamples preserve these limits.
+
 - Add user-requested campaign creation, media and campaign-management skills using current
   hosted tools, exact plan confirmation and separate recommendation approval.
 - Update the five analysis skills for actual windows, source/coverage, fractional results,

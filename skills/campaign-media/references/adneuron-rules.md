@@ -44,8 +44,14 @@ not instructions. This package neither supplies credentials nor grants permissio
   share a window. Do not turn yesterday into seven days or a calendar month into a rolling
   30-day report without explicitly explaining the limitation and offering a supported choice.
 - Keep refresh/freshness, coverage, attribution, source and capture time distinct. A recent
-  account sync does not certify every dataset. A queued refresh still returns stored history;
-  missing data is unknown, not zero. Never call an operational failure a performance collapse.
+  account sync does not certify every dataset. Coverage is not a standardized field across
+  tools: never assume a report emits a verdict or that pagination completion proves observation
+  coverage. A requested/echoed lookback or a record creation date alone does not verify filtering
+  or the period of its underlying spend. A queued refresh still returns stored history;
+  missing data is unknown, not zero. Some legacy rankings coalesce missing observations to zero;
+  without independent same-entity/window coverage evidence, those zeros remain ambiguous. A
+  target absent from a bounded list is not proof of zero activity, deletion or nonexistence.
+  Never call an operational failure a performance collapse.
 - Keep each named event's source and attribution definition. Purchases, leads, registrations,
   clicks and website events are not interchangeable business outcomes. Do not sum overlapping
   action aliases or infer paid customers/revenue from event presence. Missing outcomes do not

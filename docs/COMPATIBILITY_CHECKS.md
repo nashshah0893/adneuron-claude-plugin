@@ -49,3 +49,20 @@ to run automatically against customer accounts.
   plugin release nor a listed tool enables server flags, measurement or spend authority.
 - Release/update through the intended Claude distribution route after review; do not treat a
   GitHub PR, local validator success or marketplace file as proof of a public directory listing.
+
+## Review follow-up: reporting contract corrections
+
+The [independent review](https://github.com/nashshah0893/adneuron-claude-plugin/pull/3#issuecomment-6461700873)
+identified four real limitations. These changes correct guidance only; no backend fix is claimed.
+
+| Counterexample | Required answer behavior |
+|---|---|
+| An old open finding is returned for both 7 and 90 days. | Explain that the findings tool does not filter by the requested period; creation time is not the spend window. No this-week loss claim. |
+| A finding names a campaign in prose but has no account/currency/evidence fields. | Show only available fields, with attribution/currency/evidence unverified. No selected-account assumption, USD claim or monetary total. |
+| Exactly 100 findings arrive without pagination. | State the bound; do not claim an exhaustive requested-period or selected-account audit. |
+| A campaign with no stored observations appears with zero spend/clicks/results. | Mark returned zeros as ambiguous unless independent same-campaign/window observation coverage verifies them. No inactivity, poor-performance or waste conclusion. |
+| A low-spend requested entity is outside the top 200 entity-performance rows. | Explain the bounded-list limit and unsupported exact filter. No zero/deleted/nonexistent conclusion or invented continuation. |
+| Meta ad analysis returns partial source errors and a next cursor. | Use actual status, complete/page_complete, next_cursor and source_errors; preserve partial data. No fabricated readiness verdict or account-wide page ranking. |
+
+Rechecked the relevant deployed-source queries/signatures/response fields. Package validation and
+static name checks remain separate from semantic guidance review and actual Claude behavior.

@@ -27,12 +27,18 @@ Read `references/adneuron-rules.md` first. Separate observations, missing eviden
 | Website events missing or pixel selection | `list_meta_pixels`, then `get_meta_pixel_stats` for the selected account/pixel |
 | Is the selected ad set learning? | Resolve it with `list_meta_ad_sets`, then `get_meta_learning_status` using its required AdNeuron UUID |
 | What creative/configuration is in an ad? | `get_meta_ad_creatives` and the selected account's ad list |
-| What does Meta ad performance show? | `analyze_meta_ad_performance`, only when its returned readiness/coverage allows it |
+| What does Meta ad performance show? | `analyze_meta_ad_performance`: inspect actual `status`, `complete`, `page_complete`, `next_cursor` and `source_errors`; no separate readiness/coverage verdict is returned |
 | Is fatigue evidence available? | `detect_meta_creative_fatigue`; missing/unsupported diagnostics remain unavailable |
 | Google query, targeting or review issue | `analyze_google_search_terms`, `get_google_campaign_targeting` or `get_google_ad_policy_violations`, as relevant |
 
 Do not run this table as a checklist or inspect every ad set automatically. Listed tools or
 formats may be gated; follow unavailable, reconnect, partial and pending responses honestly.
+For Meta ad analysis, `complete` and `page_complete` concern source-page collection and reported
+errors; they do not certify historical observation coverage or verified business measurement.
+A ranking applies only to the returned page (`ranking_scope`), not the entire account. Follow
+`next_cursor` using the supported cursor argument and unchanged selection when more pages are
+needed. Preserve source errors and missing comparison/video fields; do not turn them into zero.
+Do not wait for or invent a readiness verdict that this response does not contain.
 
 ## Explain clearly
 

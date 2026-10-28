@@ -19,19 +19,37 @@ Read `references/adneuron-rules.md` and follow it throughout.
    | Overall account/workspace results | `get_performance_summary` |
    | Requested campaign ranking | `list_top_performers` |
    | Google versus Meta observations | `compare_platforms` |
-   | One campaign, ad set or ad | `get_campaign_performance`, `get_ad_set_performance`, `get_ad_performance` |
+   | Account campaign list, highest spend first | `get_campaign_performance` (account and dates; no campaign-ID filter) |
+   | Ad-set/ad-group list | `get_ad_set_performance` (account and dates; optional campaign filter, no ad-set-ID filter) |
+   | Ad list | `get_ad_performance` (account and dates; optional campaign/ad-set filters, no ad-ID filter) |
    | Meta campaign-period results | `get_meta_campaign_performance` |
    | Google campaign settings and structure | `get_google_campaign_detail`, `get_google_campaign_structure` |
    | Meta ads and configured creatives | `list_meta_ads`, `get_meta_ad_creatives` |
 
    Resolve targets using the lists/reports and the ID type each tool accepts. Do not assume a
    native campaign ID works everywhere or force sync when the selected tool supports live reads.
+   The three entity-performance tools above are spend-sorted bounded lists: default 50, maximum
+   200 entities, with no continuation cursor. They are not exact single-entity lookups. Match a
+   requested target only if its verified identifier is in the returned list. If absent, explain
+   it may be outside the bound; absence proves neither zero activity nor a missing/deleted entity.
+   Use another exposed read with appropriate supported targeting when available, or disclose
+   that this tool cannot establish the selected entity's results. Never invent ID/offset filters.
 3. Read source, actual dates, currency, coverage and `refresh`/pending states before interpreting
-   figures. Explain when results are stored while a refresh is still running. Follow continuation
+   figures where those fields are actually present. Do not assume every report supplies a
+   coverage verdict; state when it is unknown. Explain when results are stored while a refresh
+   is still running. Follow continuation
    only when needed to answer the question completely; never call a prefix the best/worst list.
 4. For `list_top_performers`, report the actual returned sort and scope. It is workspace-wide;
    do not silently present it as a selected account's complete ranking. A fallback sort by clicks
-   is a different descriptive view, not proof of the best business outcome.
+   is a different descriptive view, not proof of the best business outcome. Its current stored
+   query can replace missing campaign observations with zeros, and the response supplies no
+   per-campaign observation coverage. Treat zero-valued metrics as ambiguous unless independent
+   evidence verifies the same campaign/window coverage. Label them as zero returned, observation
+   coverage unknown; do not call them observed inactivity, zero results, poor performance or
+   waste. In tables/charts use an ambiguous/coverage-unknown marker instead of a measured-zero
+   bar; preserve a source zero only when clearly labelled as unverified. Aggregate reconciliation or a recent account sync does not resolve this ambiguity.
+   Prefer a supported reporting path with adequate source/observation state when available;
+   another unverified list or an absent row is not that proof.
 5. Show a short headline and a readable table or chart using compatible returned values. Keep
    accounts/currencies separate and show spend and result volume beside efficiency. Name exact
    event definitions; Meta outcome/ROAS fields can remain unavailable even when delivery exists.
