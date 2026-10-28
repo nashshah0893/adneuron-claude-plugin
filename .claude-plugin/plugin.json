@@ -1,7 +1,7 @@
 {
   "name": "adneuron",
-  "version": "0.3.3",
-  "description": "Analyze Google Ads and Meta Ads in Claude with AdNeuron: performance reports, budget review, change diagnosis, waste audits and keyword planning.",
+  "version": "0.4.0",
+  "description": "Google Ads and Meta Ads workflows in Claude: reporting, diagnosis, budget review, keyword planning, media, and campaign creation/management with exact confirmation and separate recommendation approval, subject to live AdNeuron availability.",
   "author": {
     "name": "AdNeuron.ai",
     "url": "https://adneuron.ai"
@@ -18,5 +18,6 @@
     "keywords"
   ],
   "mcpServers": "./.mcp.json",
-  "privacyPolicyUrl": "https://adneuron.ai/privacy"
+  "privacyPolicyUrl": "https://adneuron.ai/privacy",
+  "repository": "https://github.com/nashshah0893/adneuron-claude-plugin"
 }

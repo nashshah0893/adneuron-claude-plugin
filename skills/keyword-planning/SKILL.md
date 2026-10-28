@@ -1,29 +1,30 @@
 ---
 name: keyword-planning
-description: Plans Google Ads keywords, budgets and campaign types with AdNeuron's Keyword Planner access. Use when the user asks for "keyword ideas", "search volume for", "how much would it cost to advertise on", "what budget do I need", "which campaign type should I use", "Search vs Performance Max", or wants to plan a new Google Ads campaign.
+description: Researches Google Ads keyword ideas, historical cost estimates and campaign planning with AdNeuron. Use for search volume, keyword themes, budget options or planning a Google Search campaign; does not promise traffic or create a campaign automatically.
 ---
 
-# Keyword and Campaign Planning
+# Keyword and campaign planning
 
-Help the user plan a new or expanded Google Ads effort: keywords, expected costs, and campaign type.
+Read `references/adneuron-rules.md` first.
 
-## Before calling tools
+1. Resolve a connected Google Ads account with `list_accounts`; Keyword Planner uses that
+   account's access. Gather the business/service, location and language from existing context.
+   Ask only for essential missing details; do not silently assume US or English from API defaults.
+2. Call `research_keywords` with the relevant account, 1–10 seed keywords, country and language,
+   following the live schema. Show returned volume, competition, CPC/currency and limitations as
+   historical estimates, never guaranteed clicks, sales or current auction prices.
+3. Group ideas by intent and relevance. Low volume alone does not make a high-intent keyword
+   unsuitable. Present a short, reasoned shortlist and clearly label suggested negatives.
+4. When useful, call `get_budget_recommendation` for a chosen shortlist (maximum 20 keywords)
+   and location. Describe returned Conservative/Moderate/Aggressive tiers as modelled scenarios;
+   estimated traffic shares are assumptions, not outcomes or a reason to spend more automatically.
+5. For a new campaign, use `select_google_campaign_type` and its actual supported-family guidance.
+   Do not rank unsupported campaign types or promise a full Performance Max lifecycle.
+6. Present a concise keyword table, optional scenario comparison, suggested structure and one
+   follow-up. If the user wants to create the campaign, continue with `campaign-creation` using
+   the real prepare/confirm/execute route when available. Do not default to manual Ads Manager
+   instructions when AdNeuron can handle it; if it cannot, explain that specific limitation.
 
-1. Read `references/adneuron-rules.md` once per conversation and follow it.
-2. Keyword tools need a connected Google Ads account `id` from `list_accounts` (used only for Keyword Planner access). If there's no Google Ads account, offer `connect_account` with `google_ads`.
-3. Gather from the conversation: product or service, 1-10 seed keywords, target country (ISO code, default US) and language (default en). Ask only for what's missing and essential.
-
-## Workflow
-
-1. **Ideas**: call `research_keywords` with `seed_keywords`, `account_id`, `country_code`, `language`. Returns ideas with search volume, competition and estimated CPC.
-2. **Shortlist**: group ideas by intent (high-intent/transactional, research, brand, irrelevant). Propose up to 20 target keywords, leaving out irrelevant and very low-volume terms, and suggest obvious negative keywords.
-3. **Budget**: after the user agrees on the shortlist (or if they asked for a budget directly), call `get_budget_recommendation` with `account_id`, `keywords` (max 20) and `target_location`. Present the Conservative, Moderate and Aggressive tiers with estimated clicks and spend.
-4. **Campaign type** (if they're planning a campaign): call `select_google_campaign_type`. It uses the brand profile and connected accounts; present the top recommendation and its reasons.
-
-## Build the answer
-
-- **Keyword table**: keyword, monthly searches, competition, estimated CPC, intent group.
-- **Budget tiers table** when fetched, plus which tier fits the user's stated budget or goals.
-- **Recommended setup**: campaign type, ad-group themes from the intent groups, starter negative keywords.
-- State that Keyword Planner figures are historical estimates, not guarantees.
-- If the user wants to create the campaign, give them the setup to build in Google Ads. Any change made through AdNeuron needs their explicit approval; if AdNeuron says campaign creation isn't available yet, say so.
+No native account changes occur during research. Approval of keyword ideas is not approval to
+create, activate or change spend. Existing-account optimization recommendations retain the
+separate AdNeuron approval requirement.

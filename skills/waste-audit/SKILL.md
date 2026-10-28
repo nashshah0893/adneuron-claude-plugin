@@ -1,30 +1,44 @@
 ---
 name: waste-audit
-description: Finds wasted ad spend and stale or disconnected data in Google Ads and Meta Ads using AdNeuron. Use when the user asks "where am I wasting money", "audit my ad account", "find wasted spend", "are my ad connections healthy", "health check my ads", "negative keyword gaps", or "any anomalies in my campaigns".
+description: Reviews AdNeuron's stored open workspace waste findings and data-health evidence. Use for suspected wasted spend or connection health. The legacy findings list does not establish a requested period, affected account or verified monetary loss.
 ---
 
-# Waste and Data-Health Audit
+# Waste and data-health review
 
-Find spend that isn't producing results and confirm the data behind it is fresh enough to trust.
+Read `references/adneuron-rules.md` first.
 
-## Before calling tools
+## What the current findings tool establishes
 
-Read `references/adneuron-rules.md` once per conversation and follow it.
+`scan_for_waste` returns at most 100 open workspace findings, ordered by its stored estimate,
+without a continuation cursor. Although it accepts `lookback_days` and echoes `period_days`,
+its current query does not filter findings by that period. Do not describe these rows as this
+week's/month's waste or a completed audit of the requested dates. `created_at` dates the finding
+record; it does not establish when the underlying spend happened.
+
+The response includes finding identifiers, type, severity, title, description, status, creation
+time and a legacy estimate field. It does not provide structured account/campaign identifiers,
+source evidence or a verified currency for each finding. A name in a title/description is a
+clue, not a verified account association. Never attribute a row to the selected account merely
+because the user selected it or a description sounds relevant.
 
 ## Workflow
 
-1. Call `scan_for_waste` (`lookback_days`, default 30). It returns prioritized findings from AdNeuron's detectors: budget waste, stale campaigns, negative-keyword gaps and anomalies. If it returns no findings, say the scan has no results yet and that a fresh account sync in AdNeuron will populate it; don't conclude the account is waste-free.
-2. Call `get_platform_connection_health` to check stored token status, last sync time and connected account count per platform. It uses stored data only; it does not verify conversion events or call the ad platforms.
-
-## Build the answer
-
-- **Headline**: estimated wasted spend in the window (per currency) and the single biggest fix.
-- **Findings table**, highest priority first: finding, campaign or ad group, wasted spend, evidence, recommended action.
-- **Connection health**: per platform, token status, last sync, connected accounts.
-- **Action plan**: up to 5 steps in priority order. Say where each one is done (Google Ads or Meta Ads Manager); any change needs the user's explicit approval.
-- **Scope line**: window, timezone, currency, last sync.
-
-## Do not
-
-- Do not call a finding confirmed waste if the connection-health check shows stale data or an expired or disconnected token; flag it as unverified until the data is refreshed. This check cannot tell whether conversion events are firing, so don't say tracking is working or broken.
-- Do not make changes from this skill.
+1. State the limitation before presenting results: these are open workspace findings, with the
+   requested period and account attribution unverified. Show only returned fields. The 100-row
+   bound means the response is not an exhaustive inventory when more findings may exist.
+2. If the user asked for an account/date-specific assessment, offer a separately supported
+   scoped performance/query read for that selected account and window. Keep that evidence
+   separate; it does not retroactively prove a stored finding's identity, period or cause.
+3. When freshness/access is in question, `get_platform_connection_health` checks stored
+   connection/sync data. It does not verify events, all reporting history or the findings' dates.
+4. No findings means none returned. It does not prove the account is waste-free, the detector
+   ran, or a sync will necessarily create findings. Follow any supported refresh guidance.
+5. Present a concise table of the available title/type, severity, record date and status, plus
+   limitations and one useful next check. Do not invent evidence, account labels or campaign IDs.
+6. Do not treat `estimated_waste_usd` as proof of USD, a compatible currency, a requested-period
+   loss or actual recoverable savings. By default withhold monetary-loss totals until scope,
+   currency and evidence are independently established. If the user requests raw fields, retain
+   the source field name and explicitly label its currency/period/evidence as unverified.
+7. A detector suggestion is not a measured cause or executable plan. A supported optimization
+   recommendation still requires the separate authenticated AdNeuron approval route; never
+   execute it through a user-requested route merely because the user asked for an audit.
