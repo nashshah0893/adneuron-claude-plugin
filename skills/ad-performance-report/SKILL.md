@@ -1,40 +1,50 @@
 ---
 name: ad-performance-report
-description: Builds a performance report for connected Google Ads and Meta Ads accounts using AdNeuron. Use when the user asks "how are my ads doing", "summarize my Google Ads", "Meta ads performance last week", "top campaigns", "best ROAS campaigns", "compare Google vs Meta", or wants a weekly or monthly ad report.
+description: Reports Google Ads and Meta Ads results with AdNeuron. Use for ad performance summaries, campaign results, top campaigns and platform comparisons. Keeps accounts, currencies, selected outcomes and incomplete data explicit.
 ---
 
-# Ad Performance Report
+# Ad performance report
 
-Turn AdNeuron's synced data into a clear, accurate performance report.
+Read `references/adneuron-rules.md` and follow it throughout.
 
-## Before calling tools
+## Workflow
 
-1. Read `references/adneuron-rules.md` once per conversation and follow it throughout.
-2. Settle scope from the request without asking unless truly ambiguous:
-   - **Accounts**: all connected accounts by default; one account if the user names it (match against `list_accounts`).
-   - **Window**: 7 days by default; map other requests to 7/30/60/90 per the rules.
+1. Resolve the business/account and requested period from the conversation. Use `list_accounts`
+   only when selection is unknown or changed. Default to a seven-completed-day summary when no
+   period is given, and disclose it. Inspect the chosen tool's schema for other supported dates.
+2. Use the smallest useful report:
 
-## Pick the right tool
+   | Question | Tool |
+   |---|---|
+   | Overall account/workspace results | `get_performance_summary` |
+   | Requested campaign ranking | `list_top_performers` |
+   | Google versus Meta observations | `compare_platforms` |
+   | One campaign, ad set or ad | `get_campaign_performance`, `get_ad_set_performance`, `get_ad_performance` |
+   | Meta campaign-period results | `get_meta_campaign_performance` |
+   | Google campaign settings and structure | `get_google_campaign_detail`, `get_google_campaign_structure` |
+   | Meta ads and configured creatives | `list_meta_ads`, `get_meta_ad_creatives` |
 
-| User wants | Call |
-|---|---|
-| Overall performance summary | `get_performance_summary` (`lookback_days`, optional `account_id`) |
-| Best or biggest campaigns | `list_top_performers` (`sort_by`: spend, roas, conversions, clicks; `limit`) |
-| Google Ads vs Meta Ads | `compare_platforms` |
+   Resolve targets using the lists/reports and the ID type each tool accepts. Do not assume a
+   native campaign ID works everywhere or force sync when the selected tool supports live reads.
+3. Read source, actual dates, currency, coverage and `refresh`/pending states before interpreting
+   figures. Explain when results are stored while a refresh is still running. Follow continuation
+   only when needed to answer the question completely; never call a prefix the best/worst list.
+4. For `list_top_performers`, report the actual returned sort and scope. It is workspace-wide;
+   do not silently present it as a selected account's complete ranking. A fallback sort by clicks
+   is a different descriptive view, not proof of the best business outcome.
+5. Show a short headline and a readable table or chart using compatible returned values. Keep
+   accounts/currencies separate and show spend and result volume beside efficiency. Name exact
+   event definitions; Meta outcome/ROAS fields can remain unavailable even when delivery exists.
+6. For an unresolved goal, show usable delivery/named events and ask only the missing question.
+   Do not manufacture CPA/ROAS or imply incidental results established a campaign's intent.
+7. Close with actual scope/freshness limits and one relevant follow-up. Offer pixel, learning or
+   creative diagnostics only when they address the question; use `performance-diagnosis` for
+   changes and `budget-review` for budget questions. Recommendations do not authorize changes.
 
-Answer most "how are my ads doing" questions with `get_performance_summary` plus, when a campaign breakdown helps, one `list_top_performers` call. Don't call more than three tools for a standard report.
+## Limits
 
-## Build the answer
-
-1. **Headline** (2-3 sentences): spend, primary results (conversions or conversion value), cost per result or ROAS, and the most important takeaway.
-2. **Key metrics table**: spend, impressions, clicks, CTR, CPC, conversions, CPA, conversion value and ROAS when returned. One row per account or platform; separate currencies.
-3. **Campaigns**: top campaigns with spend, results and efficiency; call out the strongest and weakest.
-4. **Platform comparison** (only if fetched): describe each platform's results without recommending a budget split. `compare_platforms` does not authorize allocation advice, because attribution and freshness differ between platforms.
-5. **Scope line**: window, timezone, currency, last sync, and any unavailable metrics or sample accounts.
-6. Offer one follow-up: explain a change (`performance-diagnosis`), check budgets (`budget-review`), or scan for waste (`waste-audit`).
-
-## Do not
-
-- Do not invent metrics the tools didn't return, and don't compute ROAS without conversion value.
-- Do not treat the report as permission to change campaigns; recommend changes and let the user decide.
-- If the user asks for industry benchmarks or a downloadable report, say AdNeuron doesn't offer that through Claude right now and offer the performance summary instead.
+- No generic conversions total from overlapping event types or pooled cross-currency headline.
+- No causal winner, wasted-spend or budget-allocation claim from descriptive average results.
+- Preserve raw mode, missing values, fractional counts and provisional periods.
+- Do not promise a report export, benchmark or unavailable diagnostic. Explain a returned limit
+  and offer a supported view rather than claiming an absent tool exists.
