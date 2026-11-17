@@ -1,6 +1,17 @@
 # Changelog
 
-## 0.4.0 — compatibility update (in review)
+## 0.4.1
+
+- Remove `scripts/check_package.py` and `docs/COMPATIBILITY_CHECKS.md`. The directory accepts
+  scripts only from verified organizations, so 0.4.0 was refused by its automatic check.
+- Update the skills for AdNeuron's current tools: one-call changes (`pause_*`, `resume_*`,
+  `update_*`, `remove_*`) after an explicit yes, replacing the removed prepare/execute pairs;
+  one-call campaign creation, created paused; current upload tools.
+- Replace removed tool names: `list_ad_budgets`, `get_google_campaign_detail`,
+  `get_google_campaign_structure`, `get_meta_campaign_performance`, `get_meta_ad_creatives`
+  and `get_meta_learning_status`.
+
+## 0.4.0 — compatibility update (refused by directory policy)
 
 Review follow-up corrects legacy findings' unfiltered period/account/currency limits, ambiguous
 zero-ranked observations, the bounded/non-targeted entity lists, and Meta ad analysis's actual

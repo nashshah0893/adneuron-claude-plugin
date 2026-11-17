@@ -1,61 +1,46 @@
 ---
 name: campaign-management
-description: Guides explicitly requested campaign pause/resume, daily budget changes, post-creation activation and supported Meta ad edits using AdNeuron. Distinguishes a user's request from optimization recommendations and requires the correct confirmation or authenticated approval route.
+description: Guides changes the user asks for on existing Google Ads and Meta Ads campaigns with AdNeuron — pause or resume, budgets, bids, names, dates, targeting, keywords, ads and removal. Shows the exact change and gets the user's explicit yes before any change.
 ---
 
-# Campaign and budget changes
+# Change an existing campaign
 
-Read `references/adneuron-rules.md`. Use only the exact operation the user requested and the
-currently available tool contract. This skill supplies guidance, never spend authority.
+Read `references/adneuron-rules.md`. This skill guides a change the user asked for; it never
+supplies spend authority and makes no change on its own.
 
-## Establish the change
+## Find the right object and tool
 
-1. Resolve the business/account and exact campaign or ad; use account-local reports/lists and
-   current native reads when needed. Stored launch progress is not proof of current delivery.
-   Do not pick the first similarly named campaign or infer internal UUIDs from a native ID.
-2. Establish whether the user requested a specific change or AdNeuron suggested an optimization.
-   For the latter use the separate authenticated AdNeuron approval route; a chat yes does not
-   replace it and does not turn that recommendation into a user-requested operation.
-3. Show old/current values when verified and the exact proposed account, targets, amount and
-   currency, schedule/status effect and relevant risk. A resume/activation can start spending.
-   Never disguise a percentage recommendation as an already-confirmed exact amount.
+1. Resolve the account with `list_accounts`, then the exact campaign, ad set/ad group or ad with
+   the platform's live lists (`list_google_campaigns`, `list_google_ad_groups`,
+   `list_meta_campaigns`, `list_meta_ad_sets`, `list_meta_ads`). Don't pick the first similar
+   name; ask only if the user's choice is ambiguous.
+2. Pick the tool that matches the change. AdNeuron's tools are named by what they do — for
+   example `pause_*`/`resume_*` for on/off, `update_*` for budgets, settings, targeting, keywords
+   and ads, `remove_*` for removal. Use the tool list the server provides and read its
+   description; it says what to show the user and which current values to pass.
+3. If no tool covers the change, say so plainly and explain where to make it in Google Ads or
+   Meta Ads Manager. Don't substitute a different change.
 
-## User-requested campaign operations
+## Show, confirm, change
 
-Use the platform's matching pair and its returned fields; never guess an executor payload.
+1. Read the current values the tool needs (for example from `get_google_campaign_details`,
+   `get_meta_campaign_details` or the live lists) and show current and new values side by side,
+   in the account currency. Say what the change does: pausing stops ads; resuming can start
+   spending; a daily budget is an average, and some days spend more.
+2. Get the user's explicit yes for exactly that change. Then call the tool once.
+3. Report what the reply says:
+   - Done: show the new value the reply read back.
+   - Changed since you showed it: nothing was sent; show the current value and ask again.
+   - Already in place: say so; nothing else was changed.
+   - Uncertain or failed: say what's known, follow the reply's `next_step`, and don't repeat
+     the change blindly.
+4. A change affects only the object named. Follow the reply's `next_step` to check related
+   objects (for example, a resumed campaign whose ad sets are still paused).
 
-| Operation | Prepare | Execute after exact confirmation |
-|---|---|---|
-| Google pause | `prepare_google_campaign_pause_for_user_request` | `execute_user_requested_google_campaign_pause` |
-| Google resume | `prepare_google_campaign_resume_for_user_request` | `execute_user_requested_google_campaign_resume` |
-| Google daily budget | `prepare_google_daily_budget_change_for_user_request` | `execute_user_requested_google_daily_budget_change` |
-| New Search campaign activation | `prepare_google_search_activation_for_user_request` | `execute_user_requested_google_search_activation` |
-| Meta pause | `prepare_meta_campaign_pause_for_user_request` | `execute_user_requested_meta_campaign_pause` |
-| Meta resume | `prepare_meta_campaign_resume_for_user_request` | `execute_user_requested_meta_campaign_resume` |
-| Meta daily budget | `prepare_meta_daily_budget_change_for_user_request` | `execute_user_requested_meta_daily_budget_change` |
+## Do not
 
-Preparation does not execute the change. Obtain the required explicit confirmation of the exact
-returned plan before calling its user-requested executor. Changed targets/content, expiry or stale
-state requires renewed preparation and confirmation, never reuse of an older yes.
-
-For an optimization recommendation, use the corresponding exposed approval preparation tool
-and its returned authenticated review link/next steps. Wait for the server-verified decision
-before an approved executor; keep the immutable plan and target binding. If the server says the
-approval route is unavailable, stop and explain the limitation rather than using the table above.
-
-## Existing Meta ad edits
-
-When requested and supported, use `prepare_meta_ad_update_for_user_request`, show the exact
-proposed ad/status/copy/media/automation change and obtain confirmation before
-`execute_user_requested_meta_ad_update`. A creative edit may require a confirmed pause-first
-sequence and does not implicitly resume the ad. Surface that effect before confirmation. Treat
-unsupported formats and stale native snapshots as limits, not permission to rebuild the ad.
-
-## Verify and explain
-
-- Retain the exact plan/run/native references. Report actual success, partial, pending, uncertain
-  or rejected outcomes. An acknowledgement is not evidence of current serving or approval.
-- Follow the original operation's status/recovery guidance. Never blindly repeat an uncertain
-  write under a new plan or change another campaign as a workaround.
-- No deletion, unrelated-account transfer, hidden budget increase, unrequested activation or
-  automatic change follows from reporting, upload, draft approval or this skill being installed.
+- Don't change several objects in one step unless the tool says it does; one object per call.
+- Don't apply an AdNeuron finding or your own suggestion without the user asking for that
+  exact change.
+- Don't remove anything the user didn't name. For Meta "delete", ask whether to archive or
+  delete permanently. Google removal is permanent.
