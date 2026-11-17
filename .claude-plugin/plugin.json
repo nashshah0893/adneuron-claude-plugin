@@ -1,7 +1,7 @@
 {
   "name": "adneuron",
-  "version": "0.4.0",
-  "description": "Google Ads and Meta Ads workflows in Claude: reporting, diagnosis, budget review, keyword planning, media, and campaign creation/management with exact confirmation and separate recommendation approval, subject to live AdNeuron availability.",
+  "version": "0.4.1",
+  "description": "Google Ads and Meta Ads in Claude: reporting, diagnosis, budget review, keyword planning, media, and campaign creation and management, with every change shown first and made only after your explicit yes.",
   "author": {
     "name": "AdNeuron.ai",
     "url": "https://adneuron.ai"

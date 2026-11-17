@@ -19,17 +19,19 @@ Read `references/adneuron-rules.md` and follow it throughout.
    | Overall account/workspace results | `get_performance_summary` |
    | Requested campaign ranking | `list_top_performers` |
    | Google versus Meta observations | `compare_platforms` |
-   | Account campaign list, highest spend first | `get_campaign_performance` (account and dates; no campaign-ID filter) |
-   | Ad-set/ad-group list | `get_ad_set_performance` (account and dates; optional campaign filter, no ad-set-ID filter) |
-   | Ad list | `get_ad_performance` (account and dates; optional campaign/ad-set filters, no ad-ID filter) |
-   | Meta campaign-period results | `get_meta_campaign_performance` |
-   | Google campaign settings and structure | `get_google_campaign_detail`, `get_google_campaign_structure` |
-   | Meta ads and configured creatives | `list_meta_ads`, `get_meta_ad_creatives` |
+   | Campaign results for one account | `get_campaign_performance` (account and dates; optional campaign filter) |
+   | Ad-set/ad-group results | `get_ad_set_performance` (account and dates; optional campaign filter) |
+   | Ad results | `get_ad_performance` (account and dates; optional campaign/ad-set filters) |
+   | Cheapest cost per result | the three tools above with `sort_by: cost_per_result` (on Meta, name the `result_event`) |
+   | One Meta campaign in full | `get_meta_campaign_details` |
+   | One Google campaign's settings and results | `get_google_campaign_details`, then `list_google_ad_groups` for its ad groups |
+   | Meta ads and their creatives | `list_meta_ads` with `include_creative` |
 
    Resolve targets using the lists/reports and the ID type each tool accepts. Do not assume a
    native campaign ID works everywhere or force sync when the selected tool supports live reads.
-   The three entity-performance tools above are spend-sorted bounded lists: default 50, maximum
-   200 entities, with no continuation cursor. They are not exact single-entity lookups. Match a
+   The three entity-performance tools above return bounded lists: default 50, maximum 200
+   entities, with no continuation cursor. Without a campaign filter they are not exact
+   single-entity lookups. Match a
    requested target only if its verified identifier is in the returned list. If absent, explain
    it may be outside the bound; absence proves neither zero activity nor a missing/deleted entity.
    Use another exposed read with appropriate supported targeting when available, or disclose

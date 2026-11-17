@@ -11,9 +11,12 @@ Read `references/adneuron-rules.md` before calling tools.
 
 1. Resolve the selected business/accounts and currencies. Use the user's stated monthly target
    and dates if supplied; do not invent a spending target or mix unrelated clients.
-2. Call `list_ad_budgets` for the relevant account/period. Respect the native owner: shared Google
-   budgets appear once, and Meta campaign/ad-set budgets can have different scopes. Do not add
-   a campaign total to budgets for its own ad sets or count a shared budget for every campaign.
+2. Read budgets live for each relevant account. Google: `list_google_campaigns` (each campaign's
+   own budget) and `list_google_shared_budgets` (budgets shared by several campaigns, with their
+   period). Meta: `list_meta_campaigns` (campaign budgets) and `list_meta_ad_sets` (ad-set
+   budgets; null when the campaign holds the budget). Respect the real owner: count a shared
+   Google budget once, never once per campaign, and never add a Meta campaign budget to the
+   budgets of its own ad sets. State each budget's period; a shared budget isn't always daily.
 3. Get compatible actual spend using `get_performance_summary` or a targeted performance tool.
    Match each owner to its actual member campaigns/ad sets and dates. Account-wide spend cannot
    stand in for one ad-set's spend; a partial listing is not the owner's complete population.
@@ -34,5 +37,5 @@ Read `references/adneuron-rules.md` before calling tools.
 - Describe possible causes of a gap as hypotheses. Average CPA/ROAS and a large spend share do
   not establish incremental returns or justify moving money by themselves.
 - Recommend investigation or a change only when the selected measurement and evidence support
-  it. If the user wants action, use `campaign-management` and the appropriate approval route.
+  it. If the user asks for a change, use `campaign-management`: show it and get an explicit yes.
   This review itself makes no account changes.

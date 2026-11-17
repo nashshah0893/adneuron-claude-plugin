@@ -38,25 +38,21 @@ in AdNeuron or use its connection tool. Never paste ad-platform passwords or API
 | `performance-diagnosis` | Changes, pixel events, selected ad-set learning and creative evidence | Why did results change, and what can we verify? |
 | `waste-audit` | Stored findings with evidence, freshness and uncertainty | Review suspected wasted spend in this account. |
 | `keyword-planning` | Google keyword ideas, historical cost estimates and supported campaign planning | Plan Search keywords for my plumbing business. |
-| `campaign-creation` | Draft → preview/preparation → confirmation → supported paused creation | Help me prepare a Meta carousel campaign. |
-| `campaign-media` | Private image/video intake, confirmed upload, supported association and recovery | Upload this image to the selected Meta account. |
-| `campaign-management` | Confirmed pause/resume/budget changes and supported Meta ad edits | Prepare a daily budget change for this campaign. |
+| `campaign-creation` | Draft → show every setting → explicit yes → created paused | Help me create a Meta carousel campaign. |
+| `campaign-media` | Choose, check and upload images/videos with an explicit yes; use them in ads | Upload this image to my Meta account. |
+| `campaign-management` | Pause/resume, budgets, settings, targeting, keywords, ads and removal, each after an explicit yes | Lower this campaign's daily budget to $40. |
 
 Skills follow the live schema, actual results and returned next steps. Pending or unverified
 capabilities are not promised. Missing data stays unknown; fractional results, currencies,
 actual dates, attribution and provisional periods remain visible.
 
-## Confirmation and approval
+## How changes work
 
-Reporting is not permission to change an account. A user-requested change requires the exact
-plan and explicit confirmation; a recommendation to optimize existing campaigns uses AdNeuron's
-separate authenticated approval route. Preparation, preview, upload, creation and activation
-are different operations. Installing the plugin grants none of that authority.
-
-Meta previews can cancel the member's earlier waiting creation plans for the account, including
-incomplete edits. Previous cards cannot create afterward; returning to a draft needs a new plan.
-The media-operation status tool can update saved recovery state without retrying a provider write.
-Respect Claude's confirmation prompts and the server's permission/readiness checks.
+Reporting is not permission to change an account. Before any change, Claude shows exactly what
+will change (current and new values, in the account currency) and waits for your explicit yes.
+New campaigns are created paused; turning one on is a separate change you confirm. Uploading
+media creates no ad. Installing the plugin grants no authority to change anything, and
+AdNeuron's own checks (permissions, account access, availability) still apply to every change.
 
 ## Usage, privacy and support
 
@@ -73,27 +69,11 @@ without the user's request. [Support](https://adneuron.ai/support).
 ## Maintainers
 
 The shared source of workflow rules is `references/adneuron-rules.md`. Each skill carries a
-self-contained copy under its own `references/` directory for plugin/client portability.
-After editing the shared source, run:
+copy under its own `references/` directory. After editing the shared source, copy it into every
+`skills/*/references/` folder, then run `claude plugin validate .`.
 
-```sh
-python3 scripts/check_package.py --sync-rules
-python3 scripts/check_package.py
-claude plugin validate .
-```
-
-Optional: validate tool references against a fresh authenticated MCP `tools/list` JSON export:
-
-```sh
-python3 scripts/check_package.py --catalog /path/to/tools-list.json
-```
-
-Use only deployed tool names and follow server availability rather than adding a release-time
-allowlist. Update both manifest versions for package changes. Validate locally, obtain independent
-review and perform real Claude connection/interaction checks before claiming end-to-end acceptance.
-[Compatibility evidence and reviewer scenarios](docs/COMPATIBILITY_CHECKS.md) distinguish local
-validation from actual Claude/native acceptance.
-
-Tool names/annotations are served by the backend; an annotation-only server change does not
-require duplicating those definitions in this package. Users may need to refresh/reconnect their
-Claude surface to see its latest discovery. Package updates follow that surface's update process.
+This package contains only Markdown, JSON and the icon: the Claude plugin directory accepts
+scripts and other file types only from verified organizations, so keep tooling out of this
+repository. Name only tools the hosted server currently lists, and prefer describing the
+behaviour each tool's own description defines over copying it. Update both manifest versions
+for every package change.

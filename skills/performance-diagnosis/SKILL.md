@@ -25,8 +25,9 @@ Read `references/adneuron-rules.md` first. Separate observations, missing eviden
 | Question | Tool and boundary |
 |---|---|
 | Website events missing or pixel selection | `list_meta_pixels`, then `get_meta_pixel_stats` for the selected account/pixel |
-| Is the selected ad set learning? | Resolve it with `list_meta_ad_sets`, then `get_meta_learning_status` using its required AdNeuron UUID |
-| What creative/configuration is in an ad? | `get_meta_ad_creatives` and the selected account's ad list |
+| Is the selected ad set learning? | Resolve it with `list_meta_ad_sets`, then `get_meta_ad_set_learning_status` with that Meta ad set ID |
+| What creative/configuration is in an ad? | `list_meta_ads` with `include_creative` for the selected campaign or ad |
+| Why does a Google campaign get few impressions? | `get_google_campaign_details`: read its serving status, bidding and account billing first |
 | What does Meta ad performance show? | `analyze_meta_ad_performance`: inspect actual `status`, `complete`, `page_complete`, `next_cursor` and `source_errors`; no separate readiness/coverage verdict is returned |
 | Is fatigue evidence available? | `detect_meta_creative_fatigue`; missing/unsupported diagnostics remain unavailable |
 | Google query, targeting or review issue | `analyze_google_search_terms`, `get_google_campaign_targeting` or `get_google_ad_policy_violations`, as relevant |

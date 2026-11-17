@@ -1,62 +1,41 @@
 ---
 name: campaign-media
-description: Helps users select, prepare and explicitly upload images or videos, attach Search images, or add supported Meta ads through AdNeuron. Use for campaign images, video processing, carousel assets, upload status or media-operation recovery; it does not automatically create or activate campaigns.
+description: Helps the user choose, check and upload images and videos for Google Ads and Meta Ads with AdNeuron, and use them in ads. Shows exactly what will be uploaded and gets the user's explicit yes first. Uploading alone creates no ad.
 ---
 
 # Campaign images and videos
 
-Read `references/adneuron-rules.md`. Media selection, private preparation, native upload,
-campaign use and activation are separate effects. Explain the applicable effect before it runs.
+Read `references/adneuron-rules.md`. Choosing, uploading, using media in an ad and turning an
+ad on are separate steps. Say which one is about to happen before it happens.
 
-## Choose or prepare media
+## Choose media
 
-1. Resolve account/platform and the user's intended image/video role and destination. Reuse
-   compatible native assets from `discover_meta_assets` or `discover_google_image_assets` when
-   appropriate; `list_campaign_images` lists prepared account-local images separately.
-2. Use `help_user_upload` when the user needs instructions. Follow the live input contract for
-   Claude's available attachment references or an exact user-selected HTTPS URL. Never invent
-   a public file URL/hash, pass a local path the hosted service cannot read, or manufacture
-   ChatGPT-specific attachment fields for Claude. If the attachment cannot be passed, explain
-   the supported intake method and request a usable user-selected source.
-3. Use `prepare_campaign_images` for private image intake and `prepare_campaign_video` for
-   supported video intake. Show returned dimensions, type, preview, role fit and limits. Private
-   preparation changes AdNeuron's stored media, even when nothing is uploaded to Google/Meta.
-   It is not permission to crop, replace, upload or use an asset in an ad without agreement.
-4. Keep batch item identities, successes and failures separate. Do not resend successful items,
-   treat unsupported files as valid, or claim an entire batch is ready from a partial result.
+1. Resolve the account and what the media is for (platform, ad format, placement or role).
+2. Offer images and videos already in the account first, using the server's library tools
+   (for example `discover_meta_assets` or `list_google_image_library`).
+3. For new media, follow the upload tool's description for what it accepts: an existing asset
+   ID, a public link, or a file the user attached. If you can't pass the user's file, ask for a
+   public link shared as "anyone with the link" or offer an account image. Never invent a hash,
+   asset ID or link, and never pass a path on the user's computer.
+4. When the upload tool offers a check-only mode, use it first to measure size and format and
+   preview the media. Compare it with the platform's guidance for the intended placement and
+   tell the user about any mismatch. Offer an edited version only if the user agrees.
 
-## Confirm the native upload
+## Upload
 
-| Target | Prepare exact upload | Execute confirmed upload |
-|---|---|---|
-| Meta image | `prepare_meta_image_upload_for_user_request` | `execute_user_requested_image_upload` |
-| Google image/logo | `prepare_google_image_upload_for_user_request` | `execute_user_requested_image_upload` |
-| Meta video | `prepare_meta_video_upload_for_user_request` | `execute_user_requested_meta_video_upload` |
+1. Show the account and the exact files and their roles, and get the user's explicit yes.
+2. Call the upload tool once. Report each item separately: uploaded (with its ID), failed (with
+   the reason), or unconfirmed. Don't call a whole batch ready when only part of it is.
+3. A video may still be processing after upload: check its status as the reply says and don't
+   upload it again.
+4. If an upload is unconfirmed, it may or may not have applied. Ask the user to check in the
+   ad platform before trying again, and follow the reply's `next_step`.
 
-Show the account, exact files, roles and returned plan before confirmation. Use the executor's
-actual schema and original immutable references. Upload creates a native asset, not an approved
-ad or permission to attach it to every campaign. Honor all format/access/write/readiness gates.
+## Use media in ads
 
-## Use uploaded assets only when requested
-
-- Google Search image use: prepare with `prepare_google_search_image_for_user_request`, show
-  the selected campaign/image/role and exact effect, confirm, then use
-  `execute_user_requested_google_search_image` with the original plan.
-- Supported Meta new-ad use: `prepare_meta_ad_for_user_request`,
-  `prepare_meta_image_ad_for_user_request` or `prepare_meta_dco_ad_for_user_request` according
-  to the requested format and current schema. Follow the returned confirmation/execution route,
-  such as `execute_user_requested_meta_image_ad`; do not create duplicates or substitute formats.
-- Whole-campaign creation belongs to `campaign-creation`. Editing an existing ad belongs to
-  `campaign-management`. Additional text/media variants share the shown budget; do not invent
-  unshown combinations or claim results will improve.
-
-## Pending, processing and uncertain
-
-- An uploaded video can still be processing. Use `get_meta_video_status` when indicated; keep
-  the same native video ID and wait as instructed. Do not reupload a pending video.
-- For an uncertain upload, attachment or Meta add/edit, use
-  `get_campaign_image_operation_status` with its original plan. This performs native reads and
-  may update AdNeuron recovery state or release a verified lock; it never retries the mutation.
-- Missing native IDs/objects do not prove no send. Preserve uncertainty, keep batch child plans
-  separate, and follow the returned support/recovery guidance. Only a completed, verified result
-  can establish that a particular asset/association/ad exists; it does not establish serving.
+- Uploading attaches nothing. Adding media to a campaign or ad is a separate change: show the
+  exact campaign, ad and media, get the user's yes, then use the matching tool (for example
+  `update_google_ad_assets`, an `add_*_ad` tool or `update_meta_ad`). New ads start paused
+  unless the tool says otherwise.
+- A whole new campaign belongs in the `campaign-creation` skill; changes to existing ads belong
+  in `campaign-management`.

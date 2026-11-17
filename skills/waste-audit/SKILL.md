@@ -39,6 +39,6 @@ because the user selected it or a description sounds relevant.
    loss or actual recoverable savings. By default withhold monetary-loss totals until scope,
    currency and evidence are independently established. If the user requests raw fields, retain
    the source field name and explicitly label its currency/period/evidence as unverified.
-7. A detector suggestion is not a measured cause or executable plan. A supported optimization
-   recommendation still requires the separate authenticated AdNeuron approval route; never
-   execute it through a user-requested route merely because the user asked for an audit.
+7. A detector suggestion is not a measured cause or executable plan. Present findings as
+   suggestions. An audit request is not a request to change the account; any change follows
+   the user's explicit request through the `campaign-management` skill.

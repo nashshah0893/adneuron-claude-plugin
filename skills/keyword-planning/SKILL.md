@@ -21,10 +21,9 @@ Read `references/adneuron-rules.md` first.
 5. For a new campaign, use `select_google_campaign_type` and its actual supported-family guidance.
    Do not rank unsupported campaign types or promise a full Performance Max lifecycle.
 6. Present a concise keyword table, optional scenario comparison, suggested structure and one
-   follow-up. If the user wants to create the campaign, continue with `campaign-creation` using
-   the real prepare/confirm/execute route when available. Do not default to manual Ads Manager
-   instructions when AdNeuron can handle it; if it cannot, explain that specific limitation.
+   follow-up. If the user wants to create the campaign, continue with `campaign-creation`
+   (show the full campaign, get an explicit yes, create it paused). Do not default to manual
+   Google Ads instructions when AdNeuron can handle it; if it cannot, explain that limitation.
 
 No native account changes occur during research. Approval of keyword ideas is not approval to
-create, activate or change spend. Existing-account optimization recommendations retain the
-separate AdNeuron approval requirement.
+create, activate or change spend.
